@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:user-notch-43691001.figma.site)",
+      "Bash(npx vite *)",
+      "WebFetch(domain:localhost)",
+      "Bash(curl -s http://localhost:5174/)",
+      "Bash(start *)"
+    ]
+  }
+}
