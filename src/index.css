@@ -80,8 +80,9 @@ button { cursor: none; }
 /* ── Hero split layout ────────────────────────── */
 .hero-split {
   display: grid;
-  grid-template-columns: 1fr 2.4fr;
-  gap: clamp(40px, 5vw, 72px);
+  grid-template-columns: 0.8fr 2.4fr;
+  gap: clamp(60px, 8vw, 140px);
+  margin-left: -50px;
   align-items: center;
   width: 100%;
   position: relative;

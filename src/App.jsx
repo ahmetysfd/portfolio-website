@@ -5,21 +5,21 @@ import { useState, useEffect, useRef, useCallback } from "react";
    ═══════════════════════════════════════════════════ */
 const PROJECTS = [
   {
-    title: "SkyWatch",
-    subtitle: "Weather Data Platform",
+    title: "Movie Library",
+    subtitle: "Film & TV Collection Tracker",
     description:
-      "A full-stack weather tracking app with interactive 3D globe, city library, real-time data, reviews, and country exploration — built with Python Flask & JavaScript.",
-    tags: ["Python", "Flask", "JavaScript", "API", "3D Globe"],
-    image: "/images/skywatch.png",
+      "A personal movie and TV library app with rich poster grids, genre filtering, watch stats, and a visual analytics dashboard — built for cinephiles who love tracking their collection.",
+    tags: ["React", "API", "UI/UX", "Data Visualization"],
+    image: "/images/movie-lib.png",
     href: "#",
   },
   {
-    title: "Spotify Library",
+    title: "Spotify Stats",
     subtitle: "Music Analytics Dashboard",
     description:
       "Personal Spotify analytics dashboard showing top artists, tracks, listening insights and history — connected to the Spotify Web API with OAuth.",
     tags: ["React", "Spotify API", "OAuth", "Node.js"],
-    image: "/images/spotify-lib.png",
+    image: "/images/spotify-stats.png",
     href: "#",
   },
 ];
@@ -184,13 +184,13 @@ function InteractiveCircles() {
   const oy = -(mouse.y - 0.5);
 
   const circles = [
-    { size: 420, x: -120, y: -60,  speed: 40, border: "rgba(240,237,232,0.06)", bg: "transparent" },
-    { size: 300, x: 60,   y: 30,   speed: 60, border: "rgba(240,237,232,0.04)", bg: "rgba(240,237,232,0.015)" },
-    { size: 520, x: -40,  y: 80,   speed: 25, border: "rgba(240,237,232,0.05)", bg: "transparent" },
-    { size: 180, x: 200,  y: -90,  speed: 80, border: "rgba(240,237,232,0.07)", bg: "rgba(240,237,232,0.02)" },
-    { size: 260, x: -200, y: 120,  speed: 50, border: "rgba(240,237,232,0.04)", bg: "transparent" },
-    { size: 140, x: 280,  y: 100,  speed: 90, border: "rgba(240,237,232,0.08)", bg: "rgba(240,237,232,0.01)" },
-    { size: 360, x: 150,  y: -150, speed: 35, border: "rgba(240,237,232,0.035)", bg: "transparent" },
+    { size: 420, x: -490, y: -60,  speed: 40, border: "rgba(240,237,232,0.06)", bg: "transparent" },
+    { size: 300, x: -410, y: 30,   speed: 60, border: "rgba(240,237,232,0.04)", bg: "rgba(240,237,232,0.015)" },
+    { size: 520, x: -530, y: 80,   speed: 25, border: "rgba(240,237,232,0.05)", bg: "transparent" },
+    { size: 180, x: -310, y: -90,  speed: 80, border: "rgba(240,237,232,0.07)", bg: "rgba(240,237,232,0.02)" },
+    { size: 260, x: -590, y: 120,  speed: 50, border: "rgba(240,237,232,0.04)", bg: "transparent" },
+    { size: 140, x: -250, y: 100,  speed: 90, border: "rgba(240,237,232,0.08)", bg: "rgba(240,237,232,0.01)" },
+    { size: 360, x: -450, y: -150, speed: 35, border: "rgba(240,237,232,0.035)", bg: "transparent" },
   ];
 
   return (
