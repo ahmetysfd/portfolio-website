@@ -223,150 +223,85 @@ function InteractiveCircles() {
   );
 }
 
-/* ── Featured Browser Frame (iframe) ────────────── */
-function FeaturedBrowserFrame() {
+/* ── Hero Browser Window (image) ─────────────────── */
+function HeroBrowserWindow({ loaded }) {
   const [hov, setHov] = useState(false);
-  const [ref, vis] = useInView();
 
   return (
-    <div
-      ref={ref}
+    <a
+      href={FEATURED_SITE.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="hov"
       style={{
-        opacity: vis ? 1 : 0,
-        transform: vis ? "translateY(0)" : "translateY(50px)",
-        transition: "opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1)",
+        display: "block", textDecoration: "none",
+        opacity: loaded ? 1 : 0,
+        transform: loaded ? "translateY(0)" : "translateY(40px)",
+        transition: "all 1s cubic-bezier(.16,1,.3,1) .4s",
       }}
     >
-      <div style={{ marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 12 }}>
-        <div>
-          <div style={{ fontFamily: "var(--font-display)", fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 600, letterSpacing: "-.02em" }}>
-            {FEATURED_SITE.title}
-          </div>
-          <div style={{ fontSize: "clamp(12px, 1.3vw, 14px)", color: "var(--fg-muted)", marginTop: 4 }}>
-            {FEATURED_SITE.subtitle}
-          </div>
-        </div>
-        <a
-          href={FEATURED_SITE.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hov"
-          style={{
-            fontSize: 12, letterSpacing: ".05em",
-            border: "1px solid var(--border)", padding: "8px 20px", borderRadius: 100,
-            transition: "all .3s", whiteSpace: "nowrap",
-            background: hov ? "var(--fg)" : "transparent",
-            color: hov ? "var(--bg)" : "var(--fg-muted)",
-            borderColor: hov ? "var(--fg)" : "var(--border)",
-          }}
-          onMouseEnter={() => setHov(true)}
-          onMouseLeave={() => setHov(false)}
-        >
-          Visit Site →
-        </a>
-      </div>
-
-      <a
-        href={FEATURED_SITE.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hov"
-        style={{ display: "block", textDecoration: "none" }}
+      <div
+        style={{
+          borderRadius: 12,
+          overflow: "hidden",
+          border: "1px solid var(--border)",
+          background: "#111",
+          transition: "transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s",
+          transform: hov ? "translateY(-6px) scale(1.005)" : "none",
+          boxShadow: hov ? "0 24px 60px rgba(0,0,0,.5)" : "0 8px 30px rgba(0,0,0,.3)",
+        }}
+        onMouseEnter={() => setHov(true)}
+        onMouseLeave={() => setHov(false)}
       >
         <div
           style={{
-            borderRadius: 12,
-            overflow: "hidden",
-            border: "1px solid var(--border)",
-            background: "#111",
-            transition: "transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s",
-            transform: hov ? "translateY(-6px) scale(1.005)" : "none",
-            boxShadow: hov ? "0 24px 60px rgba(0,0,0,.5)" : "0 8px 30px rgba(0,0,0,.3)",
+            display: "flex", alignItems: "center", gap: 8,
+            padding: "12px 16px",
+            background: "#1a1a1a",
+            borderBottom: "1px solid var(--border)",
           }}
-          onMouseEnter={() => setHov(true)}
-          onMouseLeave={() => setHov(false)}
         >
+          <div style={{ display: "flex", gap: 6 }}>
+            <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ff5f57" }} />
+            <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#febc2e" }} />
+            <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#28c840" }} />
+          </div>
           <div
             style={{
-              display: "flex", alignItems: "center", gap: 8,
-              padding: "12px 16px",
-              background: "#1a1a1a",
-              borderBottom: "1px solid var(--border)",
+              flex: 1, marginLeft: 12,
+              background: "#0e0e0e", borderRadius: 6, padding: "6px 14px",
+              fontSize: 11, color: "var(--fg-dim)", letterSpacing: ".02em",
+              display: "flex", alignItems: "center", gap: 6,
             }}
           >
-            <div style={{ display: "flex", gap: 6 }}>
-              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ff5f57" }} />
-              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#febc2e" }} />
-              <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#28c840" }} />
-            </div>
-            <div
-              style={{
-                flex: 1, marginLeft: 12,
-                background: "#0e0e0e", borderRadius: 6, padding: "6px 14px",
-                fontSize: 11, color: "var(--fg-dim)", letterSpacing: ".02em",
-                display: "flex", alignItems: "center", gap: 6,
-              }}
-            >
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.4 }}>
-                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-              </svg>
-              user-notch-43691001.figma.site
-            </div>
-          </div>
-
-          <div style={{ position: "relative", overflow: "hidden", background: "#0a0a0a" }}>
-            <div
-              style={{
-                position: "relative",
-                width: "100%",
-                paddingTop: "56.25%",
-                overflow: "hidden",
-              }}
-            >
-              <iframe
-                src={FEATURED_SITE.url}
-                title={FEATURED_SITE.title}
-                loading="eager"
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "100%",
-                  height: "100%",
-                  border: "none",
-                }}
-              />
-            </div>
-            <div
-              style={{
-                position: "absolute", bottom: 0, left: 0, right: 0, height: 80,
-                background: "linear-gradient(transparent, rgba(7,7,7,0.6))",
-                pointerEvents: "none",
-              }}
-            />
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.4 }}>
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+            onboard.app
           </div>
         </div>
-      </a>
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 16 }}>
-        {FEATURED_SITE.tags.map((t) => (
-          <span
-            key={t}
+        <div style={{ position: "relative", overflow: "hidden" }}>
+          <img
+            src="/images/onboard.png"
+            alt="Onboard — Product Landing Page"
             style={{
-              fontSize: 11, padding: "5px 12px",
-              border: "1px solid var(--border)", borderRadius: 100,
-              color: "var(--fg-dim)", letterSpacing: ".03em",
+              width: "100%",
+              display: "block",
+              transition: "transform .6s cubic-bezier(.16,1,.3,1)",
+              transform: hov ? "scale(1.03)" : "scale(1)",
             }}
-          >
-            {t}
-          </span>
-        ))}
+          />
+          <div
+            style={{
+              position: "absolute", bottom: 0, left: 0, right: 0, height: 80,
+              background: "linear-gradient(transparent, rgba(7,7,7,0.6))",
+              pointerEvents: "none",
+            }}
+          />
+        </div>
       </div>
-
-      <p style={{ fontSize: "clamp(13px, 1.4vw, 15px)", color: "var(--fg-muted)", marginTop: 14, lineHeight: 1.7, maxWidth: 560, fontWeight: 300 }}>
-        {FEATURED_SITE.description}
-      </p>
-    </div>
+    </a>
   );
 }
 
@@ -581,8 +516,8 @@ export default function App() {
           minHeight: "100vh",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "flex-start",
-          padding: "clamp(120px, 16vh, 180px) var(--px) clamp(40px, 6vh, 80px)",
+          justifyContent: "center",
+          padding: "0 var(--px)",
           maxWidth: "var(--max-w)",
           margin: "0 auto",
           position: "relative",
@@ -600,121 +535,104 @@ export default function App() {
           }}
         />
 
-        <div
-          style={{
-            opacity: loaded ? 1 : 0,
-            transform: loaded ? "translateY(0)" : "translateY(40px)",
-            transition: "all 1s cubic-bezier(.16,1,.3,1) .2s",
-            position: "relative", zIndex: 2,
-          }}
-        >
-          {/* Status */}
-          <div style={{ display: "flex", gap: "clamp(16px,4vw,48px)", marginBottom: "clamp(32px,5vw,56px)", flexWrap: "wrap" }}>
-            <div style={{ fontSize: "clamp(11px,1.1vw,13px)", letterSpacing: ".06em", color: "var(--fg-muted)" }}>
-              <span
-                style={{
-                  display: "inline-block", width: 7, height: 7, borderRadius: "50%",
-                  background: "#4ade80", marginRight: 8, verticalAlign: "middle",
-                  animation: "blink 2.5s ease-in-out infinite",
-                }}
-              />
-              Available for work
-            </div>
-            <div style={{ fontSize: "clamp(11px,1.1vw,13px)", letterSpacing: ".06em", color: "var(--fg-muted)" }}>
-              Computer Science — B.Sc. 6th Semester
-            </div>
-          </div>
-
-          {/* Heading */}
-          <h1
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(38px, 7.5vw, 84px)",
-              fontWeight: 600, letterSpacing: "-.04em", lineHeight: 1.05,
-              marginBottom: "clamp(20px,3vw,32px)",
-              minHeight: "clamp(46px, 9vw, 102px)",
-            }}
-          >
-            {heroText}
-            <span
-              style={{
-                display: "inline-block", width: "clamp(3px,.4vw,4px)",
-                height: "clamp(38px,7.5vw,84px)", background: "var(--fg)",
-                marginLeft: 4, verticalAlign: "text-bottom",
-                animation: "blink 1s step-end infinite",
-              }}
-            />
-          </h1>
-
-          <p
-            style={{
-              fontSize: "clamp(14px,1.6vw,18px)", lineHeight: 1.7,
-              color: "var(--fg-muted)", maxWidth: 560, fontWeight: 300,
-            }}
-          >
-            A developer & designer crafting thoughtful digital experiences.
-            Building full-stack tools and interactive web applications
-            with a passion for clean code and modern UI.
-          </p>
-
-          {/* CTAs */}
-          <div style={{ display: "flex", gap: 16, marginTop: "clamp(28px,4vw,48px)", flexWrap: "wrap" }}>
-            <a
-              href="#work"
-              className="hov"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 10,
-                fontSize: 13, letterSpacing: ".04em", fontWeight: 500,
-                color: "var(--bg)", background: "var(--fg)",
-                padding: "14px 30px", borderRadius: 100,
-                transition: "all .3s cubic-bezier(.16,1,.3,1)",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 30px rgba(240,237,232,.15)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
-            >
-              View Work <span style={{ fontSize: 16 }}>↓</span>
-            </a>
-            <a
-              href="https://github.com/ahmetysfd"
-              className="hov"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 10,
-                fontSize: 13, letterSpacing: ".04em",
-                color: "var(--fg)", border: "1px solid var(--border)",
-                padding: "14px 30px", borderRadius: 100,
-                transition: "all .3s cubic-bezier(.16,1,.3,1)",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--fg)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.transform = "translateY(0)"; }}
-            >
-              GitHub →
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ━━━ FEATURED ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
-      <section
-        style={{
-          padding: "clamp(80px,12vw,160px) var(--px) clamp(40px,6vw,80px)",
-          maxWidth: "var(--max-w)", margin: "0 auto",
-        }}
-      >
-        <Reveal>
+        <div className="hero-split">
+          {/* Left — Text */}
           <div
             style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(11px,1.1vw,13px)", fontWeight: 500,
-              letterSpacing: ".12em", textTransform: "uppercase",
-              color: "var(--fg-muted)", marginBottom: "clamp(48px,7vw,80px)",
+              opacity: loaded ? 1 : 0,
+              transform: loaded ? "translateY(0)" : "translateY(40px)",
+              transition: "all 1s cubic-bezier(.16,1,.3,1) .2s",
             }}
           >
-            Featured
+            {/* Status */}
+            <div style={{ display: "flex", gap: "clamp(16px,3vw,32px)", marginBottom: "clamp(24px,4vw,44px)", flexWrap: "wrap" }}>
+              <div style={{ fontSize: "clamp(11px,1.1vw,13px)", letterSpacing: ".06em", color: "var(--fg-muted)" }}>
+                <span
+                  style={{
+                    display: "inline-block", width: 7, height: 7, borderRadius: "50%",
+                    background: "#4ade80", marginRight: 8, verticalAlign: "middle",
+                    animation: "blink 2.5s ease-in-out infinite",
+                  }}
+                />
+                Available for work
+              </div>
+              <div style={{ fontSize: "clamp(11px,1.1vw,13px)", letterSpacing: ".06em", color: "var(--fg-muted)" }}>
+                Computer Science — B.Sc. 6th Semester
+              </div>
+            </div>
+
+            {/* Heading */}
+            <h1
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(36px, 5vw, 68px)",
+                fontWeight: 600, letterSpacing: "-.04em", lineHeight: 1.05,
+                marginBottom: "clamp(16px,2.5vw,28px)",
+                minHeight: "clamp(44px, 6vw, 82px)",
+              }}
+            >
+              {heroText}
+              <span
+                style={{
+                  display: "inline-block", width: "clamp(3px,.4vw,4px)",
+                  height: "clamp(36px,5vw,68px)", background: "var(--fg)",
+                  marginLeft: 4, verticalAlign: "text-bottom",
+                  animation: "blink 1s step-end infinite",
+                }}
+              />
+            </h1>
+
+            <p
+              style={{
+                fontSize: "clamp(14px,1.4vw,17px)", lineHeight: 1.7,
+                color: "var(--fg-muted)", maxWidth: 480, fontWeight: 300,
+              }}
+            >
+              A developer & designer crafting thoughtful digital experiences.
+              Building full-stack tools and interactive web applications
+              with a passion for clean code and modern UI.
+            </p>
+
+            {/* CTAs */}
+            <div style={{ display: "flex", gap: 16, marginTop: "clamp(24px,3vw,40px)", flexWrap: "wrap" }}>
+              <a
+                href="#work"
+                className="hov"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 10,
+                  fontSize: 13, letterSpacing: ".04em", fontWeight: 500,
+                  color: "var(--bg)", background: "var(--fg)",
+                  padding: "14px 30px", borderRadius: 100,
+                  transition: "all .3s cubic-bezier(.16,1,.3,1)",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 30px rgba(240,237,232,.15)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
+              >
+                View Work <span style={{ fontSize: 16 }}>↓</span>
+              </a>
+              <a
+                href="https://github.com/ahmetysfd"
+                className="hov"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 10,
+                  fontSize: 13, letterSpacing: ".04em",
+                  color: "var(--fg)", border: "1px solid var(--border)",
+                  padding: "14px 30px", borderRadius: 100,
+                  transition: "all .3s cubic-bezier(.16,1,.3,1)",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--fg)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.transform = "translateY(0)"; }}
+              >
+                GitHub →
+              </a>
+            </div>
           </div>
-        </Reveal>
-        <FeaturedBrowserFrame />
+
+          {/* Right — Browser Window */}
+          <HeroBrowserWindow loaded={loaded} />
+        </div>
       </section>
 
       {/* ━━━ PROJECTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}

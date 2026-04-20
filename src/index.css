@@ -11,7 +11,7 @@
   --border-hover: rgba(240,237,232,0.2);
   --font-display: 'Sora', sans-serif;
   --font-body: 'Outfit', sans-serif;
-  --max-w: 1100px;
+  --max-w: 1600px;
   --px: clamp(24px, 5vw, 64px);
 }
 
@@ -76,4 +76,21 @@ button { cursor: none; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--fg-dim); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--fg-muted); }
+
+/* ── Hero split layout ────────────────────────── */
+.hero-split {
+  display: grid;
+  grid-template-columns: 1fr 2.4fr;
+  gap: clamp(40px, 5vw, 72px);
+  align-items: center;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 900px) {
+  .hero-split {
+    grid-template-columns: 1fr;
+  }
+}
 
