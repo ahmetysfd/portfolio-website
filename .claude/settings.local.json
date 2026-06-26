@@ -18,7 +18,8 @@
       "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); r=[x for x in d if not x['fork']]; print\\('non-fork repos:', len\\(r\\)\\); [print\\(f\\\\\" - {x['name']:24} lang={x['language']} stars={x['stargazers_count']} pushed={x['pushed_at'][:10]}\\\\\"\\) for x in sorted\\(r,key=lambda x:\\(-x['stargazers_count'],x['pushed_at']\\),reverse=False\\)[:8]]\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code} %{content_type}\\\\n\" \"https://ghchart.rshah.org/216e39/ahmetysfd\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" \"https://github.com/ahmetysfd.png?size=160\")",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5173/)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5173/)",
+      "Bash(curl *)"
     ]
   }
 }

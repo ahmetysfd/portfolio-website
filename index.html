@@ -8,6 +8,15 @@
     <meta property="og:title" content="Ahmet — Developer & Designer" />
     <meta property="og:description" content="Creator of PostureFix (AI posture app on the App Store). Full-stack web & product design." />
     <meta property="og:type" content="website" />
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("theme") ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+          document.documentElement.setAttribute("data-theme", t);
+        } catch (e) {}
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>" />
   </head>
   <body>

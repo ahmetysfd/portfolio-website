@@ -20,7 +20,10 @@ const APP = {
     "An AI posture coach for iPhone. Scan your posture from a single photo to detect risks like forward head, rounded shoulders and pelvic tilt — then follow a personalized daily program to fix them.",
   shots: [
     { src: "/images/posturefix-01.png", alt: "AI posture analysis flagging risks" },
+    { src: "/images/posturefix-02.png", alt: "Take a photo to analyze your posture" },
     { src: "/images/posturefix-03.png", alt: "Personalized daily program" },
+    { src: "/images/posturefix-04.png", alt: "Guided exercises and video tutorials" },
+    { src: "/images/posturefix-05.png", alt: "Smart reminders and weekly schedule" },
   ],
 };
 
@@ -59,6 +62,17 @@ function useInView() {
     return () => obs.disconnect();
   }, []);
   return [ref, vis];
+}
+
+function useTheme() {
+  const [theme, setTheme] = useState(
+    () => (typeof document !== "undefined" && document.documentElement.getAttribute("data-theme")) || "light"
+  );
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    try { localStorage.setItem("theme", theme); } catch { /* ignore */ }
+  }, [theme]);
+  return [theme, () => setTheme((t) => (t === "dark" ? "light" : "dark"))];
 }
 
 function useGitHub(user) {
@@ -114,14 +128,59 @@ function SectionLabel({ index, children }) {
   );
 }
 
-function Phone({ src, alt, className = "" }) {
+function PhoneSlideshow({ shots, interval = 2800 }) {
+  const [i, setI] = useState(0);
+  const [paused, setPaused] = useState(false);
+  useEffect(() => {
+    if (paused) return;
+    const t = setInterval(() => setI((p) => (p + 1) % shots.length), interval);
+    return () => clearInterval(t);
+  }, [paused, shots.length, interval]);
   return (
-    <div className={`phone ${className}`}>
-      <div className="phone__frame">
-        <span className="phone__island" />
-        <img src={src} alt={alt} loading="lazy" />
+    <div
+      className="slideshow"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div className="phone">
+        <div className="phone__frame">
+          <span className="phone__island" />
+          <div className="slideshow__viewport">
+            <div className="slideshow__track" style={{ transform: `translateX(-${i * 100}%)` }}>
+              {shots.map((s) => (
+                <img key={s.src} src={s.src} alt={s.alt} loading="lazy" draggable="false" />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="dots">
+        {shots.map((s, k) => (
+          <button
+            key={s.src}
+            className={`dot-btn ${k === i ? "is-active" : ""}`}
+            onClick={() => setI(k)}
+            aria-label={`Show screen ${k + 1}`}
+          />
+        ))}
       </div>
     </div>
+  );
+}
+
+function SunIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+    </svg>
+  );
+}
+function MoonIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+    </svg>
   );
 }
 
@@ -138,6 +197,7 @@ function AppleMark() {
    ═══════════════════════════════════════════════════ */
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [theme, toggleTheme] = useTheme();
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 24);
     window.addEventListener("scroll", fn, { passive: true });
@@ -147,10 +207,20 @@ function Nav() {
     <nav className={`nav ${scrolled ? "nav--solid" : ""}`}>
       <div className="nav__inner wrap">
         <a className="brand" href="#top">Ahmet<span>.</span></a>
-        <div className="nav__links">
-          <a href="#app">App</a>
-          <a href="#github">GitHub</a>
-          <a href="#contact">Contact</a>
+        <div className="nav__right">
+          <div className="nav__links">
+            <a href="#app">App</a>
+            <a href="#github">GitHub</a>
+            <a href="#contact">Contact</a>
+          </div>
+          <button
+            className="theme-btn"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            title="Toggle theme"
+          >
+            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+          </button>
         </div>
       </div>
     </nav>
@@ -296,8 +366,7 @@ export default function App() {
             </Reveal>
 
             <Reveal delay={0.1} className="app__shots">
-              <Phone src={APP.shots[1].src} alt={APP.shots[1].alt} className="app__shot app__shot--back" />
-              <Phone src={APP.shots[0].src} alt={APP.shots[0].alt} className="app__shot app__shot--front" />
+              <PhoneSlideshow shots={APP.shots} />
             </Reveal>
           </div>
         </div>
