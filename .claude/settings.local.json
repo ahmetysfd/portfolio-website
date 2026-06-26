@@ -5,7 +5,15 @@
       "Bash(npx vite *)",
       "WebFetch(domain:localhost)",
       "Bash(curl -s http://localhost:5174/)",
-      "Bash(start *)"
+      "Bash(start *)",
+      "WebFetch(domain:posturefix-website.vercel.app)",
+      "Read(//c/Users/Ahmet/Desktop/Posturefix website/**)",
+      "WebFetch(domain:itunes.apple.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(npm run *)",
+      "Read(//tmp/**)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/)",
+      "Bash(curl -s http://localhost:5173/images/posturefix-01.png -o /dev/null -w \"screenshot asset: %{http_code} %{size_download} bytes\\\\n\")"
     ]
   }
 }
