@@ -7,10 +7,13 @@ const GH_USER = "ahmetysfd";
 
 const LINKS = {
   github: `https://github.com/${GH_USER}`,
+  linkedin: "https://www.linkedin.com/in/ahmet-yusuf-demirel-562aba318/",
   appStore: "https://apps.apple.com/app/id6765663533",
   appSite: "https://posturefix-website.vercel.app/",
   email: "mailto:ahmetysfd2002@gmail.com",
 };
+
+const LINKEDIN_NAME = "Ahmet Yusuf Demirel";
 
 const APP = {
   name: "PostureFix",
@@ -26,24 +29,6 @@ const APP = {
     { src: "/images/posturefix-05.png", alt: "Smart reminders and weekly schedule" },
   ],
 };
-
-const LANG_COLORS = {
-  JavaScript: "#f1e05a", TypeScript: "#3178c6", Python: "#3572A5",
-  Swift: "#F05138", HTML: "#e34c26", CSS: "#563d7c", SCSS: "#c6538c",
-  "Jupyter Notebook": "#DA5B0B", Java: "#b07219", Kotlin: "#A97BFF",
-  "C++": "#f34b7d", C: "#555555", Go: "#00ADD8", Dart: "#00B4AB",
-  Vue: "#41b883", PHP: "#4F5D95", Ruby: "#701516", Shell: "#89e051",
-};
-const langColor = (l) => LANG_COLORS[l] || "#9aa0a6";
-
-function relTime(iso) {
-  const days = (Date.now() - new Date(iso).getTime()) / 86400000;
-  if (days < 1) return "today";
-  if (days < 2) return "yesterday";
-  if (days < 30) return `${Math.floor(days)} days ago`;
-  if (days < 365) { const m = Math.floor(days / 30); return `${m} month${m > 1 ? "s" : ""} ago`; }
-  const y = Math.floor(days / 365); return `${y} year${y > 1 ? "s" : ""} ago`;
-}
 
 /* ═══════════════════════════════════════════════════
    HOOKS
@@ -76,23 +61,12 @@ function useTheme() {
 }
 
 function useGitHub(user) {
-  const [data, setData] = useState({ status: "loading", profile: null, repos: [] });
+  const [data, setData] = useState({ status: "loading", profile: null });
   useEffect(() => {
     let alive = true;
-    Promise.all([
-      fetch(`https://api.github.com/users/${user}`).then((r) => (r.ok ? r.json() : Promise.reject())),
-      fetch(`https://api.github.com/users/${user}/repos?per_page=100&sort=pushed`).then((r) => (r.ok ? r.json() : Promise.reject())),
-    ])
-      .then(([profile, repos]) => {
-        if (!alive) return;
-        const top = repos
-          .filter((r) => !r.fork)
-          .sort((a, b) =>
-            b.stargazers_count - a.stargazers_count ||
-            new Date(b.pushed_at) - new Date(a.pushed_at))
-          .slice(0, 4);
-        setData({ status: "ready", profile, repos: top });
-      })
+    fetch(`https://api.github.com/users/${user}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((profile) => { if (alive) setData({ status: "ready", profile }); })
       .catch(() => { if (alive) setData((d) => ({ ...d, status: "error" })); });
     return () => { alive = false; };
   }, [user]);
@@ -192,6 +166,22 @@ function AppleMark() {
   );
 }
 
+function GithubMark() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.62-5.48 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.28 0 .32.22.7.83.58A12 12 0 0 0 24 12.5C24 5.87 18.63.5 12 .5Z" />
+    </svg>
+  );
+}
+
+function LinkedInMark() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0Z" />
+    </svg>
+  );
+}
+
 /* ═══════════════════════════════════════════════════
    NAV
    ═══════════════════════════════════════════════════ */
@@ -209,8 +199,7 @@ function Nav() {
         <a className="brand" href="#top">Ahmet<span>.</span></a>
         <div className="nav__right">
           <div className="nav__links">
-            <a href="#app">App</a>
-            <a href="#github">GitHub</a>
+            <a href="#connect">Connect</a>
             <a href="#contact">Contact</a>
           </div>
           <button
@@ -228,74 +217,66 @@ function Nav() {
 }
 
 /* ═══════════════════════════════════════════════════
-   GITHUB
+   CONNECT
    ═══════════════════════════════════════════════════ */
-function RepoCard({ repo }) {
+function SocialCard({ href, icon, brand, title, meta, accent, delay }) {
   return (
-    <a className="repo" href={repo.html_url} target="_blank" rel="noopener noreferrer">
-      <div className="repo__top">
-        <span className="repo__name">{repo.name}</span>
-        <span className="repo__arrow">↗</span>
-      </div>
-      <p className="repo__desc">{repo.description || "—"}</p>
-      <div className="repo__meta">
-        {repo.language && (
-          <span className="repo__lang">
-            <span className="lang-dot" style={{ background: langColor(repo.language) }} />
-            {repo.language}
-          </span>
-        )}
-        {repo.stargazers_count > 0 && <span>★ {repo.stargazers_count}</span>}
-        <span>Updated {relTime(repo.pushed_at)}</span>
-      </div>
-    </a>
+    <Reveal delay={delay} className="social-wrap">
+      <a
+        className="social"
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ "--accent": accent }}
+      >
+        <span className="social__sheen" aria-hidden="true" />
+        <div className="social__row">
+          <span className="social__icon">{icon}</span>
+          <span className="social__arrow" aria-hidden="true">↗</span>
+        </div>
+        <div className="social__body">
+          <span className="social__brand">{brand}</span>
+          <span className="social__title">{title}</span>
+        </div>
+        <span className="social__meta">{meta}</span>
+      </a>
+    </Reveal>
   );
 }
 
-function GitHub() {
+function Connect() {
   const gh = useGitHub(GH_USER);
+  const ghMeta =
+    gh.status === "ready"
+      ? `${gh.profile.public_repos} repositories · ${gh.profile.followers} follower${gh.profile.followers === 1 ? "" : "s"}`
+      : gh.status === "error"
+      ? "Code, experiments & projects"
+      : "Loading…";
+
   return (
-    <section id="github" className="section">
+    <section id="connect" className="section">
       <div className="wrap">
-        <Reveal><SectionLabel index="02">GitHub</SectionLabel></Reveal>
-        <Reveal delay={0.05}>
-          <div className="gh">
-            <div className="gh__head">
-              <img className="gh__avatar" src={`https://github.com/${GH_USER}.png?size=160`} alt={`${GH_USER} on GitHub`} />
-              <div className="gh__id">
-                <div className="gh__name">@{GH_USER}</div>
-                <div className="gh__sub">
-                  {gh.status === "ready"
-                    ? `${gh.profile.public_repos} repositories · ${gh.profile.followers} follower${gh.profile.followers === 1 ? "" : "s"}`
-                    : "Code, experiments & projects"}
-                </div>
-              </div>
-              <a className="btn btn--ghost gh__view" href={LINKS.github} target="_blank" rel="noopener noreferrer">
-                View profile ↗
-              </a>
-            </div>
-
-            <figure className="gh__chart">
-              <img
-                src={`https://ghchart.rshah.org/216e39/${GH_USER}`}
-                alt={`${GH_USER}'s GitHub contribution graph`}
-                loading="lazy"
-                onError={(e) => { e.currentTarget.closest(".gh__chart").style.display = "none"; }}
-              />
-              <figcaption>Contributions over the last year</figcaption>
-            </figure>
-
-            <div className="gh__repos">
-              {gh.status === "ready" && gh.repos.map((r) => <RepoCard key={r.id} repo={r} />)}
-              {gh.status === "loading" && [0, 1, 2, 3].map((i) => <div key={i} className="repo repo--skel" />)}
-              {gh.status === "error" && (
-                <a className="repo repo--cta" href={LINKS.github} target="_blank" rel="noopener noreferrer">
-                  Explore all repositories on GitHub →
-                </a>
-              )}
-            </div>
-          </div>
-        </Reveal>
+        <Reveal><SectionLabel index="02">Connect</SectionLabel></Reveal>
+        <div className="social-grid">
+          <SocialCard
+            href={LINKS.github}
+            icon={<GithubMark />}
+            brand="GitHub"
+            title={`@${GH_USER}`}
+            meta={ghMeta}
+            accent="#8957e5"
+            delay={0.05}
+          />
+          <SocialCard
+            href={LINKS.linkedin}
+            icon={<LinkedInMark />}
+            brand="LinkedIn"
+            title={LINKEDIN_NAME}
+            meta="Let's connect professionally"
+            accent="#0a66c2"
+            delay={0.12}
+          />
+        </div>
       </div>
     </section>
   );
@@ -309,53 +290,50 @@ export default function App() {
     <div id="top">
       <Nav />
 
-      {/* ── HERO ── */}
-      <header className="hero">
-        <div className="wrap">
-          <Reveal>
-            <div className="eyebrow">
-              <span className="dot" /> Available for work — Developer &amp; Designer
-            </div>
-          </Reveal>
-          <Reveal delay={0.08}>
-            <h1 className="hero__title">
-              I design and build<br />digital products.
-            </h1>
-          </Reveal>
-          <Reveal delay={0.16}>
-            <p className="hero__sub">
-              Creator of PostureFix, an AI posture-analysis app live on the App
-              Store. I work across iOS and the web with a focus on clean,
-              considered interfaces.
-            </p>
-          </Reveal>
-          <Reveal delay={0.24}>
-            <div className="hero__cta">
-              <a className="btn btn--solid" href="#app">View PostureFix</a>
-              <a className="btn btn--ghost" href={LINKS.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
-            </div>
-          </Reveal>
+      {/* ── HERO + iOS APP ── */}
+      <header id="app" className="hero">
+        <div className="hero__bg" aria-hidden="true">
+          <span className="hero__blob hero__blob--1" />
+          <span className="hero__blob hero__blob--2" />
+          <span className="hero__grid-lines" />
         </div>
-      </header>
 
-      {/* ── APP ── */}
-      <section id="app" className="section">
-        <div className="wrap">
-          <Reveal><SectionLabel index="01">iOS App</SectionLabel></Reveal>
-          <div className="app">
-            <Reveal className="app__info">
-              <div className="app__head">
-                <img className="app__icon" src="/images/posturefix-icon.png" alt="PostureFix app icon" />
-                <div>
-                  <h2 className="app__name">{APP.name}</h2>
-                  <div className="app__tags">
+        <div className="wrap hero__grid">
+          <div className="hero__copy">
+            <Reveal>
+              <div className="eyebrow">
+                <span className="dot" /> Available for work — Developer &amp; Designer
+              </div>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <h1 className="hero__title">
+                I design and build{" "}
+                <span className="hero__accent">digital products.</span>
+              </h1>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <p className="hero__sub">
+                Creator of PostureFix — an AI posture-analysis app live on the
+                App Store. I work across iOS and the web with a focus on clean,
+                considered interfaces.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.24}>
+              <div className="appcard">
+                <img className="appcard__icon" src="/images/posturefix-icon.png" alt="PostureFix app icon" />
+                <div className="appcard__info">
+                  <div className="appcard__name">
+                    {APP.name}
                     <span className="ver"><span className="ver__dot" /> v{APP.version} · Live</span>
-                    <span className="app__meta">{APP.meta}</span>
                   </div>
+                  <div className="appcard__meta">{APP.meta}</div>
                 </div>
               </div>
-              <p className="app__desc">{APP.description}</p>
-              <div className="app__cta">
+            </Reveal>
+
+            <Reveal delay={0.32}>
+              <div className="hero__cta">
                 <a className="btn btn--solid" href={LINKS.appStore} target="_blank" rel="noopener noreferrer">
                   <AppleMark /> App Store
                 </a>
@@ -364,16 +342,16 @@ export default function App() {
                 </a>
               </div>
             </Reveal>
-
-            <Reveal delay={0.1} className="app__shots">
-              <PhoneSlideshow shots={APP.shots} />
-            </Reveal>
           </div>
-        </div>
-      </section>
 
-      {/* ── GITHUB ── */}
-      <GitHub />
+          <Reveal delay={0.14} className="hero__visual">
+            <PhoneSlideshow shots={APP.shots} />
+          </Reveal>
+        </div>
+      </header>
+
+      {/* ── CONNECT ── */}
+      <Connect />
 
       {/* ── FOOTER ── */}
       <footer id="contact" className="footer">
@@ -386,6 +364,7 @@ export default function App() {
               </div>
               <div className="footer__links">
                 <a href={LINKS.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+                <a href={LINKS.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
                 <a href={LINKS.appStore} target="_blank" rel="noopener noreferrer">App Store ↗</a>
               </div>
             </div>
