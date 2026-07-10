@@ -126,11 +126,12 @@ img { display: block; max-width: 100%; }
 @keyframes float1 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-26px, 30px) scale(1.06); } }
 @keyframes float2 { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(24px, -26px) scale(1.08); } }
 
-.hero .wrap { max-width: 1220px; }
+.hero .wrap { max-width: 1340px; }
 .hero__grid {
   position: relative; z-index: 1;
   display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(288px, 0.85fr);
-  gap: clamp(28px, 4vw, 56px); align-items: center; width: 100%;
+  column-gap: clamp(64px, 15vw, 200px); row-gap: clamp(28px, 4vw, 56px);
+  align-items: center; width: 100%;
 }
 
 /* left region: copy + phone side by side */
