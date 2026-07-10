@@ -15,6 +15,27 @@ const LINKS = {
 
 const LINKEDIN_NAME = "Ahmet Yusuf Demirel";
 
+const WORK = [
+  {
+    name: "Shelf",
+    tagline: "Personal Media Library",
+    description:
+      "A dark, minimal personal library app for tracking films, books, music and games — with friends, activity feeds and rich media search. Built with React, Express and Supabase.",
+    image: "/images/library-app.png",
+    tags: ["React", "Express", "Supabase", "PostgreSQL"],
+    href: "https://github.com/ahmetysfd/Library-app",
+  },
+  {
+    name: "Music Stats",
+    tagline: "Spotify Listening Dashboard",
+    description:
+      "A sleek dashboard that visualizes your Spotify listening activity — top tracks, artists, albums and listening time across custom time ranges. Built with Next.js, TypeScript and Prisma.",
+    image: "/images/spotify-app.png",
+    tags: ["Next.js", "TypeScript", "Prisma", "Spotify API"],
+    href: "https://github.com/ahmetysfd/spotify-lib-app",
+  },
+];
+
 const APP = {
   name: "PostureFix",
   version: "2.1.2",
@@ -47,17 +68,6 @@ function useInView() {
     return () => obs.disconnect();
   }, []);
   return [ref, vis];
-}
-
-function useTheme() {
-  const [theme, setTheme] = useState(
-    () => (typeof document !== "undefined" && document.documentElement.getAttribute("data-theme")) || "light"
-  );
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    try { localStorage.setItem("theme", theme); } catch { /* ignore */ }
-  }, [theme]);
-  return [theme, () => setTheme((t) => (t === "dark" ? "light" : "dark"))];
 }
 
 function useGitHub(user) {
@@ -142,22 +152,6 @@ function PhoneSlideshow({ shots, interval = 2800 }) {
   );
 }
 
-function SunIcon() {
-  return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
-    </svg>
-  );
-}
-function MoonIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
-    </svg>
-  );
-}
-
 function AppleMark() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -187,7 +181,6 @@ function LinkedInMark() {
    ═══════════════════════════════════════════════════ */
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
-  const [theme, toggleTheme] = useTheme();
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 24);
     window.addEventListener("scroll", fn, { passive: true });
@@ -199,17 +192,9 @@ function Nav() {
         <a className="brand" href="#top">Ahmet<span>.</span></a>
         <div className="nav__right">
           <div className="nav__links">
-            <a href="#connect">Connect</a>
+            <a href="#work">Work</a>
             <a href="#contact">Contact</a>
           </div>
-          <button
-            className="theme-btn"
-            onClick={toggleTheme}
-            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-            title="Toggle theme"
-          >
-            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-          </button>
         </div>
       </div>
     </nav>
@@ -244,7 +229,7 @@ function SocialCard({ href, icon, brand, title, meta, accent, delay }) {
   );
 }
 
-function Connect() {
+function ConnectCards() {
   const gh = useGitHub(GH_USER);
   const ghMeta =
     gh.status === "ready"
@@ -254,28 +239,70 @@ function Connect() {
       : "Loading…";
 
   return (
-    <section id="connect" className="section">
+    <div className="hero__connect">
+      <div className="hero__connect-label">Connect</div>
+      <SocialCard
+        href={LINKS.github}
+        icon={<GithubMark />}
+        brand="GitHub"
+        title={`@${GH_USER}`}
+        meta={ghMeta}
+        accent="#8957e5"
+        delay={0.2}
+      />
+      <SocialCard
+        href={LINKS.linkedin}
+        icon={<LinkedInMark />}
+        brand="LinkedIn"
+        title={LINKEDIN_NAME}
+        meta="Let's connect professionally"
+        accent="#0a66c2"
+        delay={0.28}
+      />
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   PERSONAL WORK
+   ═══════════════════════════════════════════════════ */
+function ProjectCard({ project, delay }) {
+  return (
+    <Reveal delay={delay}>
+      <a className="project" href={project.href} target="_blank" rel="noopener noreferrer">
+        <div className="project__media">
+          <img src={project.image} alt={`${project.name} — ${project.tagline}`} loading="lazy" />
+        </div>
+        <div className="project__body">
+          <div className="project__row">
+            <span className="project__icon"><GithubMark /></span>
+            <span className="project__arrow" aria-hidden="true">↗</span>
+          </div>
+          <h3 className="project__title">
+            {project.name}
+            <span className="project__tagline">{project.tagline}</span>
+          </h3>
+          <p className="project__desc">{project.description}</p>
+          <div className="project__tags">
+            {project.tags.map((t) => (
+              <span key={t} className="project__tag">{t}</span>
+            ))}
+          </div>
+        </div>
+      </a>
+    </Reveal>
+  );
+}
+
+function Work() {
+  return (
+    <section id="work" className="section">
       <div className="wrap">
-        <Reveal><SectionLabel index="02">Connect</SectionLabel></Reveal>
-        <div className="social-grid">
-          <SocialCard
-            href={LINKS.github}
-            icon={<GithubMark />}
-            brand="GitHub"
-            title={`@${GH_USER}`}
-            meta={ghMeta}
-            accent="#8957e5"
-            delay={0.05}
-          />
-          <SocialCard
-            href={LINKS.linkedin}
-            icon={<LinkedInMark />}
-            brand="LinkedIn"
-            title={LINKEDIN_NAME}
-            meta="Let's connect professionally"
-            accent="#0a66c2"
-            delay={0.12}
-          />
+        <Reveal><SectionLabel index="01">Personal work</SectionLabel></Reveal>
+        <div className="work-grid">
+          {WORK.map((p, i) => (
+            <ProjectCard key={p.name} project={p} delay={0.05 + i * 0.07} />
+          ))}
         </div>
       </div>
     </section>
@@ -299,59 +326,63 @@ export default function App() {
         </div>
 
         <div className="wrap hero__grid">
-          <div className="hero__copy">
-            <Reveal>
-              <div className="eyebrow">
-                <span className="dot" /> Available for work — Developer &amp; Designer
-              </div>
-            </Reveal>
-            <Reveal delay={0.08}>
-              <h1 className="hero__title">
-                I design and build{" "}
-                <span className="hero__accent">digital products.</span>
-              </h1>
-            </Reveal>
-            <Reveal delay={0.16}>
-              <p className="hero__sub">
-                Creator of PostureFix — an AI posture-analysis app live on the
-                App Store. I work across iOS and the web with a focus on clean,
-                considered interfaces.
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.24}>
-              <div className="appcard">
-                <img className="appcard__icon" src="/images/posturefix-icon.png" alt="PostureFix app icon" />
-                <div className="appcard__info">
-                  <div className="appcard__name">
-                    {APP.name}
-                    <span className="ver"><span className="ver__dot" /> v{APP.version} · Live</span>
-                  </div>
-                  <div className="appcard__meta">{APP.meta}</div>
+          <div className="hero__left">
+            <div className="hero__copy">
+              <Reveal>
+                <div className="eyebrow">
+                  <span className="dot" /> Available for work — Developer &amp; Designer
                 </div>
-              </div>
-            </Reveal>
+              </Reveal>
+              <Reveal delay={0.08}>
+                <h1 className="hero__title">
+                  I design and build{" "}
+                  <span className="hero__accent">digital products.</span>
+                </h1>
+              </Reveal>
+              <Reveal delay={0.16}>
+                <p className="hero__sub">
+                  Creator of PostureFix — an AI posture-analysis app live on the
+                  App Store. I work across iOS and the web with a focus on clean,
+                  considered interfaces.
+                </p>
+              </Reveal>
 
-            <Reveal delay={0.32}>
-              <div className="hero__cta">
-                <a className="btn btn--solid" href={LINKS.appStore} target="_blank" rel="noopener noreferrer">
-                  <AppleMark /> App Store
-                </a>
-                <a className="btn btn--ghost" href={LINKS.appSite} target="_blank" rel="noopener noreferrer">
-                  Visit website ↗
-                </a>
-              </div>
+              <Reveal delay={0.24}>
+                <div className="appcard">
+                  <img className="appcard__icon" src="/images/posturefix-icon.png" alt="PostureFix app icon" />
+                  <div className="appcard__info">
+                    <div className="appcard__name">
+                      {APP.name}
+                      <span className="ver"><span className="ver__dot" /> v{APP.version} · Live</span>
+                    </div>
+                    <div className="appcard__meta">{APP.meta}</div>
+                  </div>
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.32}>
+                <div className="hero__cta">
+                  <a className="btn btn--solid" href={LINKS.appStore} target="_blank" rel="noopener noreferrer">
+                    <AppleMark /> App Store
+                  </a>
+                  <a className="btn btn--ghost" href={LINKS.appSite} target="_blank" rel="noopener noreferrer">
+                    Visit website ↗
+                  </a>
+                </div>
+              </Reveal>
+            </div>
+
+            <Reveal delay={0.14} className="hero__visual">
+              <PhoneSlideshow shots={APP.shots} />
             </Reveal>
           </div>
 
-          <Reveal delay={0.14} className="hero__visual">
-            <PhoneSlideshow shots={APP.shots} />
-          </Reveal>
+          <ConnectCards />
         </div>
       </header>
 
-      {/* ── CONNECT ── */}
-      <Connect />
+      {/* ── PERSONAL WORK ── */}
+      <Work />
 
       {/* ── FOOTER ── */}
       <footer id="contact" className="footer">
@@ -359,7 +390,7 @@ export default function App() {
           <Reveal>
             <div className="footer__top">
               <div>
-                <SectionLabel index="03">Contact</SectionLabel>
+                <SectionLabel index="02">Contact</SectionLabel>
                 <a className="footer__mail" href={LINKS.email}>ahmetysfd2002@gmail.com</a>
               </div>
               <div className="footer__links">
